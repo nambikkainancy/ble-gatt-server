@@ -1,0 +1,58 @@
+Bluetooth monitor ver 5.72
+btmon[48147]: = Note: Linux version 6.8.0-134-generic (aarch64)        0.223909
+btmon[48147]: = Note: Bluetooth subsystem version 2.22                 0.223911
+= New Index: 00:AA:01:00:00:00 (Primary,Virtual,hci0)           [hci0] 0.223918
+= Open Index: 00:AA:01:00:00:00                                 [hci0] 0.223918
+= Index Info: 00:AA:01:00:00:00 (The Linux Foundation)          [hci0] 0.223918
+bluetoothd[27439]: @ MGMT Open:... (privileged) version 1.22  {0x0001} 0.223923
+bluetoothd[27439]: @ MGMT Command:.. (0x0010) plen 17  {0x0001} [hci0] 2.226596
+        UUID: Vendor specific
+        Service class: 0x00
+@ MGMT Event: Command Complete (0x0001) plen 6         {0x0001} [hci0] 2.226696
+      Add UUID (0x0010) plen 3
+        Status: Success (0x00)
+        Class: 0x000000
+          Major class: Miscellaneous
+          Minor class: 0x00
+bluetoothd[27439]: @ MGMT Command:.. (0x0054) plen 18  {0x0001} [hci0] 2.226715
+        Instance: 1
+        Flags: 0x00010001
+          Switch into Connectable mode
+          Contain Scan Response Data
+        Duration: 0
+        Timeout: 0
+        Min advertising interval: 0.000 msec (0x0000)
+        Max advertising interval: 0.000 msec (0x0000)
+        TX power: 0 dbm (0x00)
+@ MGMT Event: Command Complete (0x0001) plen 7         {0x0001} [hci0] 2.226724
+      Add Extended Advertising Parameters (0x0054) plen 4
+        Status: Success (0x00)
+        Instance: 1
+        TX power: 127 dbm (0x7f)
+        Available adv data len: 31
+        Available scan rsp data len: 31
+bluetoothd[27439]: @ MGMT Command:.. (0x0055) plen 44  {0x0001} [hci0] 2.226735
+        Instance: 1
+        Advertising data length: 18
+        128-bit Service UUIDs (complete): 1 entry
+          Vendor specific
+        Scan response length: 15
+        Name (complete): Nancy-BLE-Lab
+@ MGMT Event: Command Complete (0x0001) plen 4         {0x0001} [hci0] 2.226748
+      Add Extended Advertising Data (0x0055) plen 1
+        Status: Success (0x00)
+        Instance: 1
+bluetoothd[27439]: @ MGMT Command:.. (0x003f) plen 1  {0x0001} [hci0] 10.220742
+        Instance: 1
+@ MGMT Event: Command Complete (0x0001) plen 4        {0x0001} [hci0] 10.221429
+      Remove Advertising (0x003f) plen 1
+        Status: Success (0x00)
+        Instance: 1
+bluetoothd[27439]: @ MGMT Command.. (0x0011) plen 16  {0x0001} [hci0] 10.222291
+        UUID: Vendor specific
+@ MGMT Event: Command Complete (0x0001) plen 6        {0x0001} [hci0] 10.222348
+      Remove UUID (0x0011) plen 3
+        Status: Success (0x00)
+        Class: 0x000000
+          Major class: Miscellaneous
+          Minor class: 0x00
