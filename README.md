@@ -6,6 +6,11 @@ Bluetooth stack), talking to BlueZ over **D-Bus**.
 In plain terms: this program makes a Linux machine advertise itself over Bluetooth and
 offer three pieces of data that a phone can read, write and subscribe to.
 
+> **New to Bluetooth LE?** Read **[docs/BLE-GUIDE.md](docs/BLE-GUIDE.md)** first — a
+> standalone guide covering BLE from zero: the radio, roles, advertising, connections, ATT,
+> GATT, security, HCI and BlueZ, ending with interview questions and answers. This README
+> assumes nothing, but that guide explains *why* things are the way they are.
+
 ---
 
 ## 1. Project structure
@@ -57,6 +62,49 @@ sudo ./build/ble-gatt-server
 ```
 
 Open a second terminal and run `sudo btmon` to watch the Bluetooth traffic.
+
+### Verified: every handler exercised
+
+Driving the characteristics directly over D-Bus — the same path a phone takes, without the
+radio:
+
+```bash
+NAME=$(sudo busctl --system list --no-legend | awk '/ble-gatt-server/ {print $1; exit}')
+C=/com/nancy/ble/service0
+
+sudo gdbus call --system --dest $NAME --object-path $C/char0 \
+     --method org.bluez.GattCharacteristic1.ReadValue "@a{sv} {}"
+sudo gdbus call --system --dest $NAME --object-path $C/char1 \
+     --method org.bluez.GattCharacteristic1.WriteValue "[byte 0x01]" "@a{sv} {}"
+sudo gdbus call --system --dest $NAME --object-path $C/char0 \
+     --method org.bluez.GattCharacteristic1.StartNotify
+```
+
+What the server logged:
+
+```
+[read ] TEMPERATURE -> 23.5 C
+[read ] STATUS -> "IDLE"
+[write] COMMAND <- 1 bytes: 01
+[state] STATUS is now "RUNNING"
+[read ] STATUS -> "RUNNING"
+[write] COMMAND <- 1 bytes: 02
+[state] STATUS is now "PAUSED"
+[read ] STATUS -> "PAUSED"
+[notify] START - peer subscribed
+[notif] TEMPERATURE = 23.8 C
+[notif] TEMPERATURE = 24.1 C
+[notif] TEMPERATURE = 24.4 C
+[notif] TEMPERATURE = 24.7 C
+[notify] STOP - peer unsubscribed
+```
+
+STATUS came back as `0x52 0x55 0x4e 0x4e 0x49 0x4e 0x47` — ASCII for `RUNNING`. A phone
+receives bytes; the app decides what they mean.
+
+> Note the `@a{sv} {}` syntax. D-Bus is **strictly typed** — passing plain `{}` is read as a
+> string and rejected with *"Type of message (s) does not match expected type (a{sv})"*.
+> That strictness is also why the introspection XML must match BlueZ's API exactly.
 
 ---
 
@@ -402,6 +450,7 @@ program's traffic.
 
 ## Reference
 
+- **[docs/BLE-GUIDE.md](docs/BLE-GUIDE.md)** — BLE from zero, with interview Q&A
 - BlueZ D-Bus API docs — `doc/org.bluez.GattManager.rst` and friends in the BlueZ source
 - `src/gatt-database.c` in BlueZ — how the attribute table is really built
 - Bluetooth Core Specification — free from bluetooth.com
